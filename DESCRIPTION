@@ -1,16 +1,15 @@
 Package: btools
-Type: Package
-Title: Misc Functions that make my life easier
+Title: tools to make my life easier when analyzing microbiome data
 Version: 0.1
-Date: 2015-07-22
-Author: Thomas W. Battalia
-Maintainer: tb1280@nyu.edu
-Description: Just some functions for microbial analysis, gene expression data, etc...
-License: None
-LazyData: TRUE
+Authors@R: person("Thomas", "Battaglia", email = "tb1280@nyu.edu",
+                  role = c("aut", "cre"))
+Description: An assortment of functions!
+Depends: R (>= 3.1.0)
+License: MIT
+LazyData: true
 Depends:
     phyloseq,
     ape,
     vegan,
     coin,
-    ggplot2,
+    ggplot2
