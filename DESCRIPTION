@@ -7,9 +7,10 @@ Description: An assortment of functions!
 Depends: R (>= 3.1.0)
 License: MIT
 LazyData: true
-Depends:
+Imports:
     phyloseq,
     ape,
     vegan,
     coin,
-    ggplot2
+Suggests:
+  ggplot2,
