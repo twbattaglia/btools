@@ -8,3 +8,9 @@ Maintainer: tb1280@nyu.edu
 Description: Just some functions for microbial analysis, gene expression data, etc...
 License: None
 LazyData: TRUE
+Depends:
+    phyloseq,
+    ape,
+    vegan,
+    coin,
+    ggplot2,
