@@ -8,28 +8,17 @@ compare_alpha_diversity <- function(physeq,
                                     test_type = "nonparametric",
                                     colVar = "PD_whole_tree_alpha",
                                     num_perm = 999,
-                                    multiple_corrections = F,
+                                    multiple_corrections = T,
                                     write = F,
                                     filename = "results", ...){
 
-  # Load libraries
-  if (!require("phyloseq")) {
-    install.packages("phyloseq", repos="http://cran.rstudio.com/")
-  }
-  suppressPackageStartupMessages(library(phyloseq))
-
   if(class(physeq)=="phyloseq"){
-    # Print message
     message("Recognized input as phyloseq object. Proceeding with analysis.")
-
-    # Retrieve data from phyloseq object
-    phylo_data <- plot_richness(physeq = physeq, x = x, measures = diversity, color = group)$data
+    phylo_data <- phyloseq::plot_richness(physeq = physeq, x = x, measures = diversity, color = group)$data
   }
 
   if(class(physeq)=="data.frame"){
-    # Print message
     message("Recognized input as data-frame. Proceeding with analysis.")
-
     phylo_data = physeq
     names(phylo_data)[which(names(phylo_data)==colVar)] <- "value"
   }
@@ -91,14 +80,8 @@ compare_alpha_diversity <- function(physeq,
       # Non Parametric Monte Carlo Bootstrap
       if(test_type == "nonparametric"){
 
-        # Load nonparametric testing library
-        if (!require("coin")) {
-          install.packages("coin", repos="http://cran.rstudio.com/")
-        }
-        suppressPackageStartupMessages(library(coin))
-
         # Perform non-parametric t.test monte carlo simulations
-        sig_res <- try(oneway_test(data_table$value ~ data_table[ ,group], distribution = approximate(B = num_perm)), silent = TRUE)
+        sig_res <- try(coin::oneway_test(data_table$value ~ data_table[ ,group], distribution = approximate(B = num_perm)), silent = TRUE)
 
         # If too little amount of samples are present for either group, result in None.
         if(class(sig_res) == "try-error"){

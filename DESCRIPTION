@@ -1,10 +1,11 @@
 Package: btools
-Title: tools to make my life easier when analyzing microbiome data
-Version: 0.1
+Title: A suite of R function for all types of microbial diversity analyses
+Version: 0.0.1
 Authors@R: person("Thomas", "Battaglia", email = "tb1280@nyu.edu",
                   role = c("aut", "cre"))
-Description: An assortment of functions!
-Depends: R (>= 3.1.0)
+Description: An delicious assortment of R functions!
+Depends:
+    R (>= 3.1.0)
 License: MIT
 LazyData: true
 Imports:
@@ -12,5 +13,8 @@ Imports:
     ape,
     vegan,
     coin,
+    dplyr,
+    stringr
 Suggests:
-  ggplot2,
+    ggplot2,
+RoxygenNote: 5.0.1
