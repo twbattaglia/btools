@@ -1,6 +1,15 @@
 # btools
 A set of R functions that help faciliate a lot of tedious processing
 
+## Install
+```bash
+library(devtools)
+install.github('twbttaglia/btools')
+library(btools)
+```
+
+
+## Usage
 
 ## List of Functions
 
