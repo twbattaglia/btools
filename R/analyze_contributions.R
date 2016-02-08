@@ -12,7 +12,7 @@
 #' @param list of column variables to add to new table
 #' @return A dataframe with taxa information and sample metadata
 #' @export
-metagenomic_contributions <- function(input_table = table_input,
+analyze_contributions <- function(input_table = table_input,
                                   mappingfile = mappingfile_input,
                                   metadata_col = metadata_col_input){
 

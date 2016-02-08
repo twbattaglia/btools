@@ -1,12 +1,21 @@
 # @ Thomas W. Battaglia
-# @ tb1280@nyu.edu
 
+#' Calculate alpha diversity statistics
+#'
+#' Compute p-values and multiple comparisons adjusted q-values for
+#' two-group comparisons across multiple timepoints.
+#'
+#' @param metagenomic_contributions.py output file
+#' @param mapping file with sample metadata
+#' @param list of column variables to add to new table
+#' @return A dataframe with taxa information and sample metadata
+#' @export
 compare_alpha_diversity <- function(physeq,
                                     x = "Day",
                                     group = "Treatment",
-                                    diversity = "Observed",
-                                    test_type = "nonparametric",
-                                    colVar = "PD_whole_tree_alpha",
+                                    diversity = c("Observed", "Shannon", "Simpson"),
+                                    test_type = c("nonparametric", "parametric"),
+                                    col_var = "PD_whole_tree_alpha",
                                     num_perm = 999,
                                     multiple_corrections = T,
                                     write = F,
@@ -20,7 +29,7 @@ compare_alpha_diversity <- function(physeq,
   if(class(physeq)=="data.frame"){
     message("Recognized input as data-frame. Proceeding with analysis.")
     phylo_data = physeq
-    names(phylo_data)[which(names(phylo_data)==colVar)] <- "value"
+    names(phylo_data)[which(names(phylo_data)== col_var)] <- "value"
   }
 
   # Get xx levels
