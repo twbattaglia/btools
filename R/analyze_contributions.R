@@ -7,14 +7,12 @@
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
 #'
-#' @param metagenomic_contributions.py output file
-#' @param mapping file with sample metadata
-#' @param list of column variables to add to new table
-#' @return A dataframe with taxa information and sample metadata
+#' @param contributions_fp File location of the metagenomic_contributions.py output file.
+#' @param mappingfile File location of your sample metadata.
+#' @param metadata a vector of metadata identfiers which you would like to add as columns.
+#' @return A dataframe with taxa information and sample metadata for each observed OTU.
 #' @export
-analyze_contributions <- function(input_table = table_input,
-                                  mappingfile = mappingfile_input,
-                                  metadata_col = metadata_col_input){
+analyze_contributions <- function(contributions_fp, mappingfile_fp, metadata = c("Description")){
 
   # - - - - - - - - - - - - -
   # Error handling
@@ -24,22 +22,24 @@ analyze_contributions <- function(input_table = table_input,
   # mapping file is a string
   # mapping file is a dataframe
   # column id's are not strings
+  # First column is not #SampleID
 
 
   # - - - - - - - - - - - - -
   # Import files
   # - - - - - - - - - - - - -
-  # Import Neccessary Datatables from given input locations.
-  input <- read.delim(input_table, header = TRUE)
+  message("Importing files...")
+  input <- read.delim(contributions_fp, header = TRUE)
   gg_db <- otu_taxonomy_97
-  mappingfile <- read.delim(mappingfile, header = TRUE)
+  mappingfile <- read.delim(mappingfile_fp, header = TRUE)
   input.df <- dplyr::tbl_df(input)
+  input.df$OTU <- as.factor(input.df$OTU)
 
 
   # - - - - - - - - - - - - -
   # Process strings
   # - - - - - - - - - - - - -
-  message("Converting OTU-IDs's to GreenGenes Taxanomy...")
+  message("Converting identifiers to names...")
   otuid_name <- gg_db[match(input.df$OTU, table = gg_db$V1), ]$V2
   otuid_name <- gsub(pattern = ';', replacement = "", x = otuid_name, fixed = T)
   otuid_name_sep <- sapply(otuid_name, function(x) stringr::str_split(x, " "))
@@ -48,7 +48,7 @@ analyze_contributions <- function(input_table = table_input,
   # - - - - - - - - - - - - -
   # Adding Names to Table
   # - - - - - - - - - - - - -
-  message("Adding Names to Table..")
+  message("Adding names to table...")
   input.df$kingdom <- gsub(pattern = 'k__', replacement = "", x = as.character(lapply(otuid_name_sep, function(x) x[[1]])), fixed = T)
   input.df$phylum <- gsub(pattern = 'p__', replacement = "", x = as.character(lapply(otuid_name_sep, function(x) x[[2]])), fixed = T)
   input.df$class <- gsub(pattern = 'c__', replacement = "", x = as.character(lapply(otuid_name_sep, function(x) x[[3]])), fixed = T)
@@ -60,9 +60,9 @@ analyze_contributions <- function(input_table = table_input,
   # - - - - - - - - - - - - -
   # Add Metadata infomation
   # - - - - - - - - - - - - -
-  message("Collecting Metadata Information and Adding to Table..")
-  metadata_names<- unlist(stringr::str_split(metadata_col, ","))
-  metadata_tbl <- data.frame(mappingfile[match(input.df$Sample, mappingfile$X.SampleID), metadata_names])
+  message("Add metadata to table...")
+  metadata_names <- unlist(stringr::str_split(metadata, ","))
+  metadata_tbl <- mappingfile[match(input.df$Sample, mappingfile$X.SampleID), metadata]
 
 
   # - - - - - - - - - - - - -
@@ -76,5 +76,6 @@ analyze_contributions <- function(input_table = table_input,
   else{
     dplyr::bind_cols(input.df, metadata_tbl) -> input.df
   }
+  message("Completed")
   return(input.df)
 }

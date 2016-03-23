@@ -21,4 +21,5 @@ plot_nice_boxplot()
 compare_beta_diversity()
 
 #### PICRUSt
-metagenomic_contribution()
+analyze_contributions()
+plot_contributions()
