@@ -13,6 +13,7 @@
 #' @param write
 #' @param filename
 #' @return A dataframe for an PERMANOVA test over each timepoint from each two group comparison.
+#' @export
 compare_beta_diversity <- function(phylo,
                                    x = "Day",
                                    group = "Treatment",
