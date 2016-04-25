@@ -5,9 +5,16 @@
 #' Compute p-values and multiple comparisons adjusted q-values for
 #' two-group comparisons across multiple timepoints.
 #'
-#' @param metagenomic_contributions.py output file
-#' @param mapping file with sample metadata
-#' @param list of column variables to add to new table
+#' @param physeq A phyloseq object
+#' @param x Variable that describes Time
+#' @param group Variable the describes different groups for comparisons
+#' @param diversity Diversity metric to use for alpha diversity calculations
+#' @param test_type type of test to use for significance testing
+#' @param col_var Column name if diversity measurements are in mapping file
+#' @param num_perm Number of permutations for non parametric tests
+#' @param multiple_corrections Should multiple comparisons be corrected on pvalues
+#' @param write Write table to file
+#' @param filename Filenam of the output results table
 #' @return A dataframe with taxa information and sample metadata
 #' @export
 compare_alpha_diversity <- function(physeq,

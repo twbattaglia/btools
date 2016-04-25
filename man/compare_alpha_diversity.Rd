@@ -11,11 +11,25 @@ compare_alpha_diversity(physeq, x = "Day", group = "Treatment",
   multiple_corrections = T, write = F, filename = "results", ...)
 }
 \arguments{
-\item{metagenomic_contributions.py}{output file}
+\item{physeq}{A phyloseq object}
 
-\item{mapping}{file with sample metadata}
+\item{x}{Variable that describes Time}
 
-\item{list}{of column variables to add to new table}
+\item{group}{Variable the describes different groups for comparisons}
+
+\item{diversity}{Diversity metric to use for alpha diversity calculations}
+
+\item{test_type}{type of test to use for significance testing}
+
+\item{col_var}{Column name if diversity measurements are in mapping file}
+
+\item{num_perm}{Number of permutations for non parametric tests}
+
+\item{multiple_corrections}{Should multiple comparisons be corrected on pvalues}
+
+\item{write}{Write table to file}
+
+\item{filename}{Filenam of the output results table}
 }
 \value{
 A dataframe with taxa information and sample metadata

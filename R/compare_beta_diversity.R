@@ -5,31 +5,25 @@
 #' Compute p-values and multiple comparisons adjusted q-values for
 #' two-group comparisons across multiple timepoints.
 #'
-#' @param phylo phyloseq object
-#' @param x
-#' @param group
-#' @param test
-#' @param bdiv
-#' @param write
-#' @param filename
+#' @param phylo A phyloseq object
+#' @param x The variable that describes Time
+#' @param group The variable that describes 2 or more groups
+#' @param test The PERMANOVA test to use.
+#' @param bdiv Beta diversity metric to calculate significance.
+#' @param write Should results be written to a file in the current working directory.
+#' @param filename The name of the output file if write is True.
 #' @return A dataframe for an PERMANOVA test over each timepoint from each two group comparison.
 #' @export
 compare_beta_diversity <- function(phylo,
                                    x = "Day",
                                    group = "Treatment",
-                                   test = "adonis",
-                                   bdiv = "unweighted",
+                                   test = c("adonis", "anosim"),
+                                   bdiv = c("unweighted", "weighted"),
                                    write = F,
                                    filename = "results", ...){
 
-  # Load libraries
-  suppressPackageStartupMessages(library(ape))
-  suppressPackageStartupMessages(library(vegan))
-  suppressPackageStartupMessages(library(phyloseq))
-
-
   # Sample metadata
-  metadata <- as(sample_data(phylo), "data.frame")
+  metadata <- as(phyloseq::sample_data(phylo), "data.frame")
 
   # Get the different levels (time) for comparing
   x_levels <- levels(metadata[ ,x])
@@ -72,7 +66,7 @@ compare_beta_diversity <- function(phylo,
 
     # Subset taxadata
     taxadata_comparison_subset <- phylo
-    sample_data(taxadata_comparison_subset) <- sample_data(metadata_comparison_subset)
+    sample_data(taxadata_comparison_subset) <- phyloseq::sample_data(metadata_comparison_subset)
 
 
     # Loop over each level (x)
@@ -83,19 +77,19 @@ compare_beta_diversity <- function(phylo,
 
       # Subset taxonomy by x
       taxadata_comparison_subset_time <- taxadata_comparison_subset
-      sample_data(taxadata_comparison_subset_time) <- sample_data(metadata_comparison_subset_time)
+      sample_data(taxadata_comparison_subset_time) <- phyloseq::sample_data(metadata_comparison_subset_time)
 
 
 
       ### Get Unifrac Distances ------------
       # Calculate unweighted values
       if(bdiv == "unweighted"){
-        unifrac <- UniFrac(taxadata_comparison_subset_time, weighted = FALSE, normalized = TRUE, parallel = FALSE)
+        unifrac <- phyloseq::UniFrac(taxadata_comparison_subset_time, weighted = FALSE, normalized = TRUE, parallel = FALSE)
       }
 
-      # Calculate unweighted values
+      # Calculate weighted values
       if(bdiv == "weighted"){
-        unifrac <- UniFrac(taxadata_comparison_subset_time, weighted = TRUE, normalized = TRUE, parallel = FALSE)
+        unifrac <- phyloseq::UniFrac(taxadata_comparison_subset_time, weighted = TRUE, normalized = TRUE, parallel = FALSE)
       }
 
 
@@ -105,7 +99,7 @@ compare_beta_diversity <- function(phylo,
       if(test == "adonis"){
 
         # Perform Adonis test
-        results <- suppressWarnings(try(adonis(formula = as.dist(unifrac) ~ metadata_comparison_subset_time[ ,group], permutations = 999)))
+        results <- suppressWarnings(try(vegan::adonis(formula = as.dist(unifrac) ~ metadata_comparison_subset_time[ ,group], permutations = 999)))
 
         # If too little amount of samples are present for either group, result in None.
         if(class(results) == "try-error"){
@@ -145,7 +139,7 @@ compare_beta_diversity <- function(phylo,
       if(test == "anosim"){
 
         # test
-        results <- suppressWarnings(try(anosim(as.dist(unifrac), metadata_comparison_subset_time[,group], permutations = 999)))
+        results <- suppressWarnings(try(vegan::anosim(as.dist(unifrac), metadata_comparison_subset_time[,group], permutations = 999)))
 
         # If too little amount of samples are present for either group, result in None.
         if(class(results) == "try-error"){
