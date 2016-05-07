@@ -16,3 +16,4 @@ vignettes/*.pdf
 
 test/
 dev/
+.RDataTmp

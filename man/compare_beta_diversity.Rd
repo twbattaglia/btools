@@ -4,9 +4,10 @@
 \alias{compare_beta_diversity}
 \title{Calculate alpha diversity statistics}
 \usage{
-compare_beta_diversity(phylo, x = "Day", group = "Treatment",
-  test = c("adonis", "anosim"), bdiv = c("unweighted", "weighted"),
-  write = F, filename = "results", ...)
+compare_beta_diversity(phylo, x = as.character(), group = as.character(),
+  test = c("adonis", "anosim", "bioenv", "permdisp"), bdiv = c("unweighted",
+  "weighted"), write = F, filename = "results", fdr = T,
+  fdr_test = "fdr", seed = 918, ...)
 }
 \arguments{
 \item{phylo}{A phyloseq object}
@@ -22,6 +23,14 @@ compare_beta_diversity(phylo, x = "Day", group = "Treatment",
 \item{write}{Should results be written to a file in the current working directory.}
 
 \item{filename}{The name of the output file if write is True.}
+
+\item{fdr}{Should FDR correction be applied.}
+
+\item{fdr_test}{The test to use to correct for multiple comparisons. Default is FDR.}
+
+\item{seed}{The seed number to use when calculating beta diversity metrics. Default is 918.}
+
+\item{...}{Any additional arguments for external functions.}
 }
 \value{
 A dataframe for an PERMANOVA test over each timepoint from each two group comparison.
