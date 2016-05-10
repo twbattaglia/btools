@@ -8,7 +8,7 @@ devtools::install.github('twbttaglia/btools')
 library(btools)
 ```
 
-# Import QIIME to phyloseq
+## Import QIIME to phyloseq
 The input OTU table in (.biom) format, must be JSON formatted before import. This issue maybe resolved in future updates.
 
 ```R
