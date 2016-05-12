@@ -19,8 +19,8 @@
 #' @return A dataframe for an PERMANOVA test over each timepoint from each two group comparison.
 #' @export
 compare_beta_diversity <- function(phylo,
-                                   x = as.character(),
-                                   group = as.character(),
+                                   x = "",
+                                   group = "",
                                    test = c("adonis", "anosim", "bioenv", "permdisp"),
                                    bdiv = c("unweighted", "weighted"),
                                    write = F,
@@ -76,7 +76,7 @@ compare_beta_diversity <- function(phylo,
       unifrac <- phyloseq::UniFrac(phylo, weighted = weighted)
 
       # Print message
-      message(paste("Comparing:", combination[1], "vs", combination[2] , "at", x, unique(metatable_sub[,x]), sep = " "), appendLF = T)
+      message(paste("Comparing:", combination[1], "vs", combination[2] , "at", as.character(x), unique(metatable_sub[,x]), sep = " "), appendLF = T)
 
       # Caculate tests
       if(test == "adonis"){

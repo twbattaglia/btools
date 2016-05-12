@@ -2,12 +2,12 @@
 % Please edit documentation in R/compare_beta_diversity.R
 \name{compare_beta_diversity}
 \alias{compare_beta_diversity}
-\title{Calculate alpha diversity statistics}
+\title{Calculate beta diversity statistics over time.}
 \usage{
-compare_beta_diversity(phylo, x = as.character(), group = as.character(),
-  test = c("adonis", "anosim", "bioenv", "permdisp"), bdiv = c("unweighted",
-  "weighted"), write = F, filename = "results", fdr = T,
-  fdr_test = "fdr", seed = 918, ...)
+compare_beta_diversity(phylo, x = "", group = "", test = c("adonis",
+  "anosim", "bioenv", "permdisp"), bdiv = c("unweighted", "weighted"),
+  write = F, filename = "results", fdr = T, fdr_test = "fdr",
+  seed = 918, ...)
 }
 \arguments{
 \item{phylo}{A phyloseq object}
@@ -22,7 +22,7 @@ compare_beta_diversity(phylo, x = as.character(), group = as.character(),
 
 \item{write}{Should results be written to a file in the current working directory.}
 
-\item{filename}{The name of the output file if write is True.}
+\item{filename}{The name of the output file if write is TRUE.}
 
 \item{fdr}{Should FDR correction be applied.}
 
@@ -37,6 +37,6 @@ A dataframe for an PERMANOVA test over each timepoint from each two group compar
 }
 \description{
 Compute p-values and multiple comparisons adjusted q-values for
-two-group comparisons across multiple timepoints.
+two-group comparisons using PERMANOVA on beta diversity metrics across multiple timepoints.
 }
 
