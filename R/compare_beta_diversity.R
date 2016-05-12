@@ -98,9 +98,7 @@ compare_beta_diversity <- function(phylo,
   }
 
   # Write results to file
-  if(write == TRUE){
-    write.table(results, paste0(filename, '.txt'), quote = F, sep = '\t', row.names = F)
-  }
+  write.table(results, paste0(filename, '.txt'), quote = F, sep = '\t', row.names = F)
   return(results)
 
 
