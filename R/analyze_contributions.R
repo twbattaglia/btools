@@ -7,12 +7,11 @@
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
 #'
-#' @param contributions_fp File location of the metagenomic_contributions.py output file.
-#' @param mappingfile File location of your sample metadata.
-#' @param metadata a vector of metadata identfiers which you would like to add as columns.
-#' @return A dataframe with taxa information and sample metadata for each observed OTU.
+#' @param contributions_fp File location of the metagenomic_contributions.py output.
+#' @param mappingfile_fp File location of the input sample metadata.
+#' @return A very long dataframe with taxa information and sample metadata for each observed OTU.
 #' @export
-analyze_contributions <- function(contributions_fp, mappingfile_fp, metadata = c("Description")){
+analyze_contributions <- function(contributions_fp, mappingfile_fp){
 
   # - - - - - - - - - - - - -
   # Error handling
@@ -60,22 +59,12 @@ analyze_contributions <- function(contributions_fp, mappingfile_fp, metadata = c
   # - - - - - - - - - - - - -
   # Add Metadata infomation
   # - - - - - - - - - - - - -
-  message("Add metadata to table...")
-  metadata_names <- unlist(stringr::str_split(metadata, ","))
-  metadata_tbl <- mappingfile[match(input.df$Sample, mappingfile$X.SampleID), metadata]
+  message("Adding metadata to table...")
+  input.df.metadata <- merge(input.df, metadata, by.x = "Sample", by.y = "X.SampleID")
 
 
   # - - - - - - - - - - - - -
   # Export table
   # - - - - - - - - - - - - -
-  # Error handling::only one metadata column input.
-  if(length(metadata_names)==1){
-    colnames(metadata_tbl) <- metadata_names
-    dplyr::bind_cols(input.df, metadata_tbl) -> input.df
-  }
-  else{
-    dplyr::bind_cols(input.df, metadata_tbl) -> input.df
-  }
-  message("Completed")
-  return(input.df)
+  return(input.df.metadata)
 }

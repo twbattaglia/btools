@@ -4,18 +4,15 @@
 \alias{analyze_contributions}
 \title{Add meta data to contributions file}
 \usage{
-analyze_contributions(contributions_fp, mappingfile_fp,
-  metadata = c("Description"))
+analyze_contributions(contributions_fp, mappingfile_fp)
 }
 \arguments{
-\item{contributions_fp}{File location of the metagenomic_contributions.py output file.}
+\item{contributions_fp}{File location of the metagenomic_contributions.py output.}
 
-\item{metadata}{a vector of metadata identfiers which you would like to add as columns.}
-
-\item{mappingfile}{File location of your sample metadata.}
+\item{mappingfile_fp}{File location of the input sample metadata.}
 }
 \value{
-A dataframe with taxa information and sample metadata for each observed OTU.
+A very long dataframe with taxa information and sample metadata for each observed OTU.
 }
 \description{
 This function loads a file as a matrix. It assumes that the first column
