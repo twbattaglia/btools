@@ -80,7 +80,7 @@ compare_beta_diversity <- function(phylo,
       message(paste("Comparing:",
                     combination[1], "vs", combination[2] ,
                     "at",
-                    as.character(x), unique(metatable_sub[,x]), sep = " "),
+                    as.character(x), unique(metatable_sub[[x]]), sep = " "),
               appendLF = T)
 
       # Caculate tests
@@ -89,12 +89,19 @@ compare_beta_diversity <- function(phylo,
                            meta = metatable_sub,
                            group = group,
                            x = x,
-                           combination1 = combination[1],
-                           combination2 = combination[2]))
+                           time = unique(metatable_sub[[x]]), 
+                           combination1 = as.character(combination[1]),
+                           combination2 = as.character(combination[2])))
       }
-      #if(test == "anosim"){
-      #  return(anosim_test(dm = unifrac, meta = metatable_sub, group = group, x = x, combination1 = combination))
-      #}
+      if(test == "anosim"){
+        return(anosim_test(dm = unifrac,
+                           meta = metatable_sub,
+                           group = group,
+                           x = x,
+                           time = unique(metatable_sub[[x]]), 
+                           combination1 = as.character(combination[1]),
+                           combination2 = as.character(combination[2])))
+      }
 
     })) # end of 2-group comparison iteration
 
@@ -115,8 +122,8 @@ compare_beta_diversity <- function(phylo,
 } # End of main function
 
 # Function for calculating adonis p-values
-adonis_test <- function(dm, meta, group, x, combination1, combination2){
-
+adonis_test <- function(dm, meta, group, x, time, combination1, combination2){
+  
   # Try comparisons
   results <- suppressWarnings(try(vegan::adonis(formula = as.dist(dm) ~ meta[[group]], permutations = 999)))
   #results2 <- suppressWarnings(try(vegan::permutest(betadisper(as.dist(dm), metadata[["number"]]))))
@@ -140,8 +147,8 @@ adonis_test <- function(dm, meta, group, x, combination1, combination2){
   }
 
   # Place results into dataframe
-  results_mat <- data.frame(Group1 = combination1,
-                            Group2 = combination2,
+  results_mat <- data.frame(Group1 = as.character(combination1),
+                            Group2 = as.character(combination2),
                             x = time,
                             n = nrow(meta),
                             SumsOfSqs = SumsOfSqs,
@@ -151,11 +158,12 @@ adonis_test <- function(dm, meta, group, x, combination1, combination2){
                             pvalue = pval)
   return(results_mat)
 }
+
 # Function for calculating anosim p-values
-anosim_test <- function(dm, meta, group, x, combination1, combination2){
+anosim_test <- function(dm, meta, group, x, time, combination1, combination2){
 
   # Try comparisons
-  results <- suppressWarnings(try(vegan::anosim(as.dist(dm), meta[,group], permutations = 999)))
+  results <- suppressWarnings(try(vegan::anosim(as.dist(dm), meta[[group]], permutations = 999)))
 
   # If too little amount of samples are present for either group, result in None.
   if(class(results) == "try-error"){
@@ -168,9 +176,6 @@ anosim_test <- function(dm, meta, group, x, combination1, combination2){
     pval <- results$signif
     R_value <- results$statistic
   }
-
-  # Find which time is being compared.
-  time <- unique(meta[ ,x])
 
   # Place results into dataframe
   results_mat <- data.frame(Group1 = combination1,
