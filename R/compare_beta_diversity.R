@@ -21,8 +21,8 @@
 compare_beta_diversity <- function(phylo,
                                    x = "",
                                    group = "",
-                                   test = c("adonis", "anosim", "bioenv", "permdisp"),
-                                   bdiv = c("unweighted", "weighted"),
+                                   test = "",
+                                   bdiv = "",
                                    write = F,
                                    filename = "results",
                                    fdr = T,
@@ -44,16 +44,16 @@ compare_beta_diversity <- function(phylo,
   }
 
   # Split table according to timepoint variable
-  sptables <- split(metadata, metadata[,x])
+  sptables <- split(metadata, metadata[[x]], drop = T)
 
   # Iterate over each time point and apply significance function
-  results <- do.call(rbind, lapply(sptables, function(metadata){
+  final <- do.call(rbind, lapply(sptables, function(data) {
 
     # Drop unused levels from metadata
-    metadata <- droplevels(metadata)
+    data[[group]] <- droplevels(data[[group]])
 
     # Get levels for comparisons
-    comparing_groups <- levels(metadata[ ,group])
+    comparing_groups <- levels(data[[group]])
 
     # Check number of levels
     if(length(comparing_groups) <= 1){
@@ -64,26 +64,37 @@ compare_beta_diversity <- function(phylo,
     # Find each 2 group comparison
     comparison_list <- combn(comparing_groups, 2, simplify = F)
 
-    # Iterate over 2 group comparisons
+    # Iterate over 2 group comparisons for one time point
     do.call(rbind, lapply(comparison_list, function(combination){
 
       # Subset metadata and apply to phyloseq object
-      metatable_sub <- subset(metadata, metadata[ ,group] %in% combination, droplevels = T)
-      phyloseq::sample_data(phylo) <- phyloseq::sample_data(metatable_sub)
+      metatable_sub <- subset(data, data[[group]] %in% combination, droplevels = T)
+      phylo0 = phylo
+      phyloseq::sample_data(phylo0) <- metatable_sub
 
       # Run Unifrac
       set.seed(seed)
-      unifrac <- phyloseq::UniFrac(phylo, weighted = weighted)
+      unifrac <- phyloseq::UniFrac(phylo0, weighted = weighted)
 
       # Print message
-      message(paste("Comparing:", combination[1], "vs", combination[2] , "at", as.character(x), unique(metatable_sub[,x]), sep = " "), appendLF = T)
+      message(paste("Comparing:",
+                    combination[1], "vs", combination[2] ,
+                    "at",
+                    as.character(x), unique(metatable_sub[,x]), sep = " "),
+              appendLF = T)
 
       # Caculate tests
       if(test == "adonis"){
-        adonis_test(dm = unifrac, meta = metatable_sub, group = group)
-      } else if(test == "anosim"){
-        anosim_test(dm = unifrac, meta = metatable_sub, group = group)
+        return(adonis_test(dm = unifrac,
+                           meta = metatable_sub,
+                           group = group,
+                           x = x,
+                           combination1 = combination[1],
+                           combination2 = combination[2]))
       }
+      #if(test == "anosim"){
+      #  return(anosim_test(dm = unifrac, meta = metatable_sub, group = group, x = x, combination1 = combination))
+      #}
 
     })) # end of 2-group comparison iteration
 
@@ -94,21 +105,21 @@ compare_beta_diversity <- function(phylo,
   # Correction for multiple comparisons
   if(fdr == TRUE){
     message("Appying multiple-testing corrections...")
-    results$padj <- p.adjust(results$pvalue, method = fdr_test)
+    final$padj <- p.adjust(final$pvalue, method = fdr_test)
   }
 
   # Write results to file
-  write.table(results, paste0(filename, '.txt'), quote = F, sep = '\t', row.names = F)
-  return(results)
-
+  write.table(final, paste0(filename, '.txt'), quote = F, sep = '\t', row.names = F)
+  return(final)
 
 } # End of main function
 
 # Function for calculating adonis p-values
-adonis_test <- function(dm, meta, group){
+adonis_test <- function(dm, meta, group, x, combination1, combination2){
 
   # Try comparisons
-  results <- suppressWarnings(try(vegan::adonis(formula = as.dist(dm) ~ meta[ ,group], permutations = 999)))
+  results <- suppressWarnings(try(vegan::adonis(formula = as.dist(dm) ~ meta[[group]], permutations = 999)))
+  results2 <- suppressWarnings(try(vegan::permutest(betadisper(as.dist(dm), metadata[["number"]]))))
 
   # If error write NA's to results
   if(class(results) == "try-error"){
@@ -128,15 +139,9 @@ adonis_test <- function(dm, meta, group){
     R2 <- results$aov.tab$R2[1]
   }
 
-  # Find which groups are being compared.
-  compared <- levels(meta[ ,group])
-
-  # Find which time is being compared.
-  time <- unique(meta[ ,x])
-
   # Place results into dataframe
-  results_mat <- data.frame(Group1 = compared[1],
-                            Group2 = compared[2],
+  results_mat <- data.frame(Group1 = combination1,
+                            Group2 = combination2,
                             x = time,
                             n = nrow(meta),
                             SumsOfSqs = SumsOfSqs,
@@ -144,13 +149,10 @@ adonis_test <- function(dm, meta, group){
                             F.Model = F.Model,
                             R2 = R2,
                             pvalue = pval)
-
   return(results_mat)
-
 }
-
 # Function for calculating anosim p-values
-anosim_test <- function(dm, meta, group){
+anosim_test <- function(dm, meta, group, x, combination1, combination2){
 
   # Try comparisons
   results <- suppressWarnings(try(vegan::anosim(as.dist(dm), meta[,group], permutations = 999)))
@@ -167,15 +169,12 @@ anosim_test <- function(dm, meta, group){
     R_value <- results$statistic
   }
 
-  # Find which groups are being compared.
-  compared <- levels(meta[ ,group])
-
   # Find which time is being compared.
   time <- unique(meta[ ,x])
 
   # Place results into dataframe
-  results_mat <- data.frame(Group1 = compared[1],
-                            Group2 = compared[2],
+  results_mat <- data.frame(Group1 = combination1,
+                            Group2 = combination2,
                             x = time,
                             n = nrow(meta),
                             R_value = R_value,
