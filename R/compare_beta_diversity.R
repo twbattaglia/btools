@@ -119,7 +119,7 @@ adonis_test <- function(dm, meta, group, x, combination1, combination2){
 
   # Try comparisons
   results <- suppressWarnings(try(vegan::adonis(formula = as.dist(dm) ~ meta[[group]], permutations = 999)))
-  results2 <- suppressWarnings(try(vegan::permutest(betadisper(as.dist(dm), metadata[["number"]]))))
+  #results2 <- suppressWarnings(try(vegan::permutest(betadisper(as.dist(dm), metadata[["number"]]))))
 
   # If error write NA's to results
   if(class(results) == "try-error"){
