@@ -29,7 +29,9 @@ compare_alpha_diversity(physeq, x = "Day", group = "Treatment",
 
 \item{write}{Write table to file}
 
-\item{filename}{Filenam of the output results table}
+\item{filename}{Filename of the output results table}
+
+\item{..}{Additional arguments}
 }
 \value{
 A dataframe with taxa information and sample metadata

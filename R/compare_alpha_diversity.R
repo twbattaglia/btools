@@ -14,7 +14,8 @@
 #' @param num_perm Number of permutations for non parametric tests
 #' @param multiple_corrections Should multiple comparisons be corrected on pvalues
 #' @param write Write table to file
-#' @param filename Filenam of the output results table
+#' @param filename Filename of the output results table
+#' @param .. Additional arguments
 #' @return A dataframe with taxa information and sample metadata
 #' @export
 compare_alpha_diversity <- function(physeq,

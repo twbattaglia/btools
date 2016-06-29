@@ -4,7 +4,8 @@
 \alias{compare_beta_diversity}
 \title{Calculate beta diversity statistics over time.}
 \usage{
-compare_beta_diversity(phylo, x = "", group = "", test = "", bdiv = "",
+compare_beta_diversity(phylo, x = as.character(), group = as.character(),
+  test = c("adonis", "anosim"), bdiv = c("weighted", "unweighted"),
   write = F, filename = "results", fdr = T, fdr_test = "fdr",
   seed = 918, ...)
 }

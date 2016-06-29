@@ -29,7 +29,7 @@ create_phylo <- function(biom_fp, mappingfile_fp, tree_fp){
   phylo <- phyloseq::merge_phyloseq(data, mapping)
 
   # Change rank names
-  if(rank_names(phylo) != c("Kingdom","Phylum", "Class", "Order", "Family", "Genus", "Species")){
+  if(phyloseq::rank_names(phylo) != c("Kingdom","Phylum", "Class", "Order", "Family", "Genus", "Species")){
     message("Rank name error. Please correct before using!")
   }
 

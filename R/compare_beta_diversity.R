@@ -19,10 +19,10 @@
 #' @return A dataframe for an PERMANOVA test over each timepoint from each two group comparison.
 #' @export
 compare_beta_diversity <- function(phylo,
-                                   x = "",
-                                   group = "",
-                                   test = "",
-                                   bdiv = "",
+                                   x = as.character(),
+                                   group = as.character(),
+                                   test = c("adonis", "anosim"),
+                                   bdiv = c("weighted", "unweighted"),
                                    write = F,
                                    filename = "results",
                                    fdr = T,
