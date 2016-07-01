@@ -14,7 +14,8 @@ Imports:
     vegan,
     coin,
     dplyr,
-    stringr
+    stringr,
+    reshape2
 Suggests:
     ggplot2,
 RoxygenNote: 5.0.1
