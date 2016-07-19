@@ -17,20 +17,20 @@ bf_ratio <- function(phylo){
   }
 
   # Collapse on phyla
-  phyla <- phyloseq::tax_glom(phylo, "Phylum")
+  phyla <- phyloseq::tax_glom(physeq = phylo, taxrank = "Phylum")
 
   # Find relative abundances
   phyla_rel <- phyloseq::transform_sample_counts(phyla, function(x) {x/sum(x)} )
 
   # Keep B/F taxa
-  phyla_rel_bact <- suppressWarnings(phyloseq::otu_table(subset_taxa(phyla_rel, Phylum == "Bacteroidetes")))
-  phyla_rel_firm <- suppressWarnings(phyloseq::otu_table(subset_taxa(phyla_rel, Phylum == "Firmicutes")))
+  phyla_rel_bact <- suppressWarnings(phyloseq::otu_table(phyloseq::subset_taxa(phyla_rel, Phylum == "Bacteroidetes")))
+  phyla_rel_firm <- suppressWarnings(phyloseq::otu_table(phyloseq::subset_taxa(phyla_rel, Phylum == "Firmicutes")))
 
   # OTU
   bf_ratio <- log2(phyla_rel_bact /  phyla_rel_firm)
 
   # Add to sample metadata
-  sample_data(phylo)$log2_bf_ratio <- as.numeric(bf_ratio)
+  phyloseq::sample_data(phylo)$log2_bf_ratio <- as.numeric(bf_ratio)
 
   # Return phyllseq object
   return(phylo)

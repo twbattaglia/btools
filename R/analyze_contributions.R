@@ -60,7 +60,7 @@ analyze_contributions <- function(contributions_fp, mappingfile_fp){
   # Add Metadata infomation
   # - - - - - - - - - - - - -
   message("Adding metadata to table...")
-  input.df.metadata <- merge(input.df, metadata, by.x = "Sample", by.y = "X.SampleID")
+  input.df.metadata <- merge(input.df, mappingfile, by.x = "Sample", by.y = "X.SampleID")
 
 
   # - - - - - - - - - - - - -
