@@ -19,14 +19,14 @@ diversity_comparison <- function(phylo, distance = c("jsd", "unifrac", "wunifrac
   dist = phyloseq::distance(phylo, distance)
 
   # Convert to dataframe object
-  dist.df <- reshape2::melt(as.matrix(dist), varnames = c("sample1", "reference"))
+  dist.df <- reshape2::melt(as.matrix(dist), varnames = c("sample1", "sample2"))
 
   # Remove 0 columns
   dist.df <- subset(dist.df, value != 0)
 
   # Convert to factors
   dist.df$sample1 <- as.factor(dist.df$sample1)
-  dist.df$reference <- as.factor(dist.df$reference)
+  dist.df$reference <- as.factor(dist.df$sample2)
 
   # Return dataframe
   return(dist.df)
