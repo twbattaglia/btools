@@ -26,7 +26,7 @@ diversity_comparison <- function(phylo, distance = c("jsd", "unifrac", "wunifrac
 
   # Convert to factors
   dist.df$sample1 <- as.factor(dist.df$sample1)
-  dist.df$reference <- as.factor(dist.df$sample2)
+  dist.df$sample2 <- as.factor(dist.df$sample2)
 
   # Return dataframe
   return(dist.df)
