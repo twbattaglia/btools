@@ -1,5 +1,15 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
+r: bioc-release
+bioc_packages:
+  - phyloseq
+  - vegan
 sudo: false
 cache: packages
+requirements:
+  build:
+    - bioconductor-biobase
+test:
+  commands:
+    - '$R -e "library(''btools'')"'
