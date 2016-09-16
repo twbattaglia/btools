@@ -1,6 +1,6 @@
 # btools
+A set of R functions that help faciliate a lot of tedious processing  
 [![Travis-CI Build Status](https://travis-ci.org/twbattaglia/btools.svg?branch=master)](https://travis-ci.org/twbattaglia/btools)
-A set of R functions that help faciliate a lot of tedious processing
 
 ## Install
 ```bash
