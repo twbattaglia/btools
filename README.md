@@ -5,7 +5,7 @@ A set of R functions that help faciliate a lot of tedious processing
 ## Install
 ```bash
 install.packages('devtools')
-devtools::install_github('twbttaglia/btools')
+devtools::install_github('twbattaglia/btools')
 library(btools)
 ```
 
