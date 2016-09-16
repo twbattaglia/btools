@@ -21,3 +21,7 @@ vignettes/*.pdf
 test/
 dev/
 *.txt
+
+R/.DS_Store
+
+.DS_Store
