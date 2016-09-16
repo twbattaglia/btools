@@ -2,15 +2,11 @@
 
 #' Import .RCC files
 #'
-#' \code{import_rcc} Import .RCC files from NanoString analysis and
-#' convert into an easily read table. Headers will be sample ID's. Adapted from NanoStringNorm.
+#' Import nanostring RCC raw files and generate a table based on sampleID's from each file.
 #'
-#' @param RCC The location of the raw nanostring files. Input should only be the
-#'   location of a folder in quotes.
-#'
+#' @param rccPath .RCC files from NanoString analysis. Adapted from NanoStringNorm.
+#' @param useFolderPath Is the input rccPath a real folder, or from a dataframe.
 #' @return A dataframe of count data with columns as samples and rows as genes.
-#'
-#
 #' @export
 #'
 import_rcc <- function(rccPath = "", useFolderPath = T){

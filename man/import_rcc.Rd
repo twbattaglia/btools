@@ -7,14 +7,14 @@
 import_rcc(rccPath = "", useFolderPath = T)
 }
 \arguments{
-\item{RCC}{The location of the raw nanostring files. Input should only be the
-location of a folder in quotes.}
+\item{rccPath}{.RCC files from NanoString analysis. Adapted from NanoStringNorm.}
+
+\item{useFolderPath}{Is the input rccPath a real folder, or from a dataframe.}
 }
 \value{
 A dataframe of count data with columns as samples and rows as genes.
 }
 \description{
-\code{import_rcc} Import .RCC files from NanoString analysis and
-convert into an easily read table. Headers will be sample ID's. Adapted from NanoStringNorm.
+Import nanostring RCC raw files and generate a table based on sampleID's from each file.
 }
 
