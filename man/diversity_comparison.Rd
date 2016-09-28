@@ -5,7 +5,8 @@
 \title{Compute pairwise diversity comparisons of different beta diversity metrics.}
 \usage{
 diversity_comparison(phylo, distance = c("jsd", "unifrac", "wunifrac",
-  "dpcoa"))
+  "dpcoa", "jaccard", "manhattan", "bray", "morisita", "horn", "chao",
+  "canberra", "euclidean"))
 }
 \arguments{
 \item{phylo}{An input phyloseq object.}

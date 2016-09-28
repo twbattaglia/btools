@@ -10,7 +10,9 @@
 #' @param distance Distance metrics to use for the pairwise comparisons.
 #' @return A dataframe of distance comparions.
 #' @export
-diversity_comparison <- function(phylo, distance = c("jsd", "unifrac", "wunifrac", "dpcoa")){
+diversity_comparison <- function(phylo, distance = c("jsd", "unifrac", "wunifrac", "dpcoa", "jaccard",
+                                                     "manhattan", "bray", "morisita", "horn", "chao",
+                                                     "canberra", "euclidean")){
 
   # Get phyloseq object metadata
   metadata <- as(phyloseq::sample_data(phylo), "data.frame")
@@ -20,9 +22,6 @@ diversity_comparison <- function(phylo, distance = c("jsd", "unifrac", "wunifrac
 
   # Convert to dataframe object
   dist.df <- reshape2::melt(as.matrix(dist), varnames = c("sample1", "sample2"))
-
-  # Remove 0 columns
-  dist.df <- subset(dist.df, value != 0)
 
   # Convert to factors
   dist.df$sample1 <- as.factor(dist.df$sample1)
