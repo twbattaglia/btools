@@ -9,11 +9,11 @@ plotPCA3D(object, intgroup = "condition", ntop = 500, returnData = FALSE)
 \arguments{
 \item{object}{a DESeqTransform object, with data in assay(x), produced for example by either rlog or varianceStabilizingTransformation.}
 
+\item{intgroup}{interesting groups: a character vector of names in colData(x) to use for grouping}
+
 \item{ntop}{number of top genes to use for principal components, selected by highest row variance}
 
 \item{returnData}{should the function only return the data.frame of PC1, PC2 and PC3 with intgroup covariates for custom plotting (default is FALSE)}
-
-\item{intergroup}{interesting groups: a character vector of names in colData(x) to use for grouping}
 }
 \value{
 An object created by plot_ly, which can be assigned and further customized.
