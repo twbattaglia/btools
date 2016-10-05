@@ -31,7 +31,7 @@ phylo <- create_phylo(biom_fp = "otu_table_json.biom",
                       tree_fp = "rep_set.tre")
 
 
-# Or
+# Or the long wayyy
 otutable <- import_biom(BIOMfilename = 'otu_table_json.biom', 
                         treefilename = 'rep_set.tre', 
                         parseFunction = parse_taxonomy_greengenes)
@@ -71,6 +71,20 @@ compare_beta_diversity(phylo,
 ```R
 contributions <- analyze_contributions(contributions_fp = "metagenomic_contributions.tab", 
                                        mappingfile_fp = "mapping_file.txt")
+
+# Plot contributions
+contributions %>% 
+  group_by(Gene, Treatment) %>%
+  mutate(Contribution_perc = ContributionPercentOfAllSamples * 100) %>%
+  filter(Contribution_perc >= 0) %>%
+  select(Gene, family, Contribution_perc) %>%
+  mutate(Contribution = Contribution_perc/sum(Contribution_perc) * 100) %>%
+  ggplot(arrange(pp_pathway_norm, family), aes(x = Treatment, y = Contribution, fill = family)) + 
+  geom_bar(stat = "identity") + 
+  theme(axis.text.x = element_text(size = 6)) + 
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 100)) + 
+  theme_light(base_size = 18) + 
+  scale_fill_brewer(palette = "Set1")
 ```
 
 #### Pairwise distances
@@ -79,7 +93,24 @@ jaccard <- diversity_comparison(phylo, distance = "jaccard")
 jsd <- diversity_comparison(phylo, distance = "jsd")
 unweighted <- diversity_comparison(phylo, distance = "unifrac")
 weighted <- diversity_comparison(phylo, distance = "wunifrac")
-
 ```
 
+#### Import NanoString data
+Thanks to NanoStringNorm
+```R
+genes <- import_rcc("cel_files/")
+```
 
+#### BF ratio
+```R
+phyloseq <- bf_ratio(phyloseq)
+
+# View log2 BF ratio's
+phyloseq$log2_bf_ratio
+```
+
+#### Plot 3D PCA 
+Thanks to DESeq2
+```R
+plotPCA3D(deseq2, intgroup = "Treatment")
+```

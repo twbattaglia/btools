@@ -14,7 +14,8 @@ Imports:
     coin,
     dplyr,
     stringr,
-    reshape2
+    reshape2,
+    plotly
 Suggests:
     ggplot2,
 RoxygenNote: 5.0.1
