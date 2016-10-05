@@ -12,19 +12,19 @@
 #' @return An object created by plot_ly, which can be assigned and further customized.
 #' @export
 plotPCA3D <- function (object, intgroup = "condition", ntop = 500, returnData = FALSE){
-  rv <- DESeq2::rowVars(DESeq2::assay(object))
+  rv <- rowVars(assay(object))
   select <- order(rv, decreasing = TRUE)[seq_len(min(ntop, length(rv)))]
-  pca <- prcomp(t(DESeq2::assay(object)[select, ]))
+  pca <- prcomp(t(assay(object)[select, ]))
   percentVar <- pca$sdev^2/sum(pca$sdev^2)
-  if (!all(intgroup %in% names(DESeq2::colData(object)))) {
+  if (!all(intgroup %in% names(colData(object)))) {
     stop("the argument 'intgroup' should specify columns of colData(dds)")
   }
-  intgroup.df <- as.data.frame(DESeq2::colData(object)[, intgroup, drop = FALSE])
+  intgroup.df <- as.data.frame(colData(object)[, intgroup, drop = FALSE])
   group <- if (length(intgroup) > 1) {
     factor(apply(intgroup.df, 1, paste, collapse = " : "))
   }
   else {
-    DESeq2::colData(object)[[intgroup]]
+    colData(object)[[intgroup]]
   }
   d <- data.frame(PC1 = pca$x[, 1],
                   PC2 = pca$x[, 2],

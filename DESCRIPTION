@@ -6,7 +6,7 @@ Authors@R: person("Thomas", "Battaglia", email = "tb1280@nyu.edu",
 Description: An assortment of R functions.
 Depends:
     R (>= 3.1.0)
-License: MIT
+License: MIT + file LICENSE
 LazyData: true
 Imports:
     phyloseq,
@@ -15,7 +15,8 @@ Imports:
     dplyr,
     stringr,
     reshape2,
-    plotly
+    plotly,
+    DESeq2
 Suggests:
-    ggplot2,
+    ggplot2
 RoxygenNote: 5.0.1
