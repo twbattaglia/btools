@@ -37,12 +37,12 @@ plotPCA3D <- function (object, intgroup = "condition", ntop = 500, returnData = 
     return(d)
   }
   message("Generating plotly plot")
-  return(
-    plotly::plot_ly(data = d,
-                    x = ~PC1,
-                    y = ~PC2,
-                    z = ~PC3,
-                    mode = "markers",
-                    type = "scatter3d")
-  )
+  p <- plotly::plot_ly(data = d,
+                       x = ~PC1,
+                       y = ~PC2,
+                       z = ~PC3,
+                       color = group,
+                       mode = "markers",
+                       type = "scatter3d")
+  return(p)
 }
