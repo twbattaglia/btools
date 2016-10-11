@@ -10,7 +10,6 @@ library(btools)
 ```
 
 ## Import QIIME to phyloseq
-The input OTU table in (.biom) format, must be JSON formatted before import. This issue maybe resolved in future updates.
 
 ```R
 # Install necessary packages
@@ -18,7 +17,6 @@ source("https://bioconductor.org/biocLite.R")
 biocLite("phyloseq")
 biocLite("ggplot2")
 biocLite("vegan")
-biocLite("randomforests")
 
 # Load necessary packages
 library(phyloseq)
@@ -26,26 +24,14 @@ library(ggplot2)
 
 # Import OTU table and tree
 # Either using function or individual steps
-phylo <- create_phylo(biom_fp = "otu_table_json.biom",
+phylo <- create_phylo(biom_fp = "otu_table.biom",
                       mappingfile_fp = "mapping_file.txt",
                       tree_fp = "rep_set.tre")
-
-
-# Or the long wayyy
-otutable <- import_biom(BIOMfilename = 'otu_table_json.biom', 
-                        treefilename = 'rep_set.tre', 
-                        parseFunction = parse_taxonomy_greengenes)
-
-# Import mapping file
-mapping <- import_qiime_sample_data(mapfilename = 'mapping_file.txt')
-
-# Merge map and otu table into once phyloseq object
-phylo <- merge_phyloseq(otutable, mapping)
 ```
 
 
 ## List of Functions
-#### Alpha Diversity
+#### Alpha diversity significance
 ```R
 compare_alpha_diversity(phylo, x = "Time", 
                         group = "Treatment", 
@@ -55,7 +41,7 @@ compare_alpha_diversity(phylo, x = "Time",
                         filename = "adiv_results") 
 ```
 
-#### Beta Diversity
+#### Beta diversity significance
 ```R
 compare_beta_diversity(phylo, 
                        x = "Time",
@@ -67,7 +53,7 @@ compare_beta_diversity(phylo,
                        filename = "bdiv_results")
 ```
 
-#### PICRUSt
+#### PICRUSt metagenomic contributions table + grpah
 ```R
 contributions <- analyze_contributions(contributions_fp = "metagenomic_contributions.tab", 
                                        mappingfile_fp = "mapping_file.txt")
@@ -87,7 +73,7 @@ contributions %>%
   scale_fill_brewer(palette = "Set1")
 ```
 
-#### Pairwise distances
+#### Pairwise distances table
 ```R
 jaccard <- diversity_comparison(phylo, distance = "jaccard")
 jsd <- diversity_comparison(phylo, distance = "jsd")
@@ -95,7 +81,7 @@ unweighted <- diversity_comparison(phylo, distance = "unifrac")
 weighted <- diversity_comparison(phylo, distance = "wunifrac")
 ```
 
-#### Import NanoString data
+#### Import NanoString data with corrected sample names
 Thanks to NanoStringNorm
 ```R
 genes <- import_rcc("cel_files/")
@@ -109,7 +95,7 @@ phyloseq <- bf_ratio(phyloseq)
 phyloseq$log2_bf_ratio
 ```
 
-#### Plot 3D PCA 
+#### Plot 3D PCA with plotly
 Thanks to DESeq2
 ```R
 plotPCA3D(deseq2, intgroup = "Treatment")

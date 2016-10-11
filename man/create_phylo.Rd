@@ -17,8 +17,8 @@ create_phylo(biom_fp, mappingfile_fp, tree_fp)
 A phyloseq object to be used downstream for many different analyses.
 }
 \description{
-This function loads an TU table (.biom format) a phylogenetic tree file (.tre) and
-a sample mapping file (.txt/.tsv) to create a standard phyloseq object. It is important
-to first convert the OTU table to JSON format, due to an issue currently with the biom package.
+This function loads an OTU table (.biom format) a phylogenetic tree file (.tre) and
+a sample mapping file (.txt/.tsv) to create a standard phyloseq object. Input BIOM file
+can be in either JSON format or HDF5.
 }
 

@@ -16,7 +16,8 @@ Imports:
     stringr,
     reshape2,
     plotly,
-    DESeq2
+    DESeq2,
+    biomformat
 Suggests:
     ggplot2
 RoxygenNote: 5.0.1
