@@ -22,8 +22,7 @@ biocLite("vegan")
 library(phyloseq)
 library(ggplot2)
 
-# Import OTU table and tree
-# Either using function or individual steps
+# Import OTU table + tree + map
 phylo <- create_phylo(biom_fp = "otu_table.biom",
                       mappingfile_fp = "mapping_file.txt",
                       tree_fp = "rep_set.tre")

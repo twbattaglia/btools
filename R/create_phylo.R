@@ -33,7 +33,8 @@ create_phylo <- function(biom_fp, mappingfile_fp, tree_fp){
 
   # Change rank names
   if(phyloseq::rank_names(phylodata) != c("Kingdom","Phylum", "Class", "Order", "Family", "Genus", "Species")){
-    message("Rank name error. Please correct before using!")
+    # Fix rank names
+    colnames(tax_table(phylodata)) <- c("Kingdom", "Phylum", "Class", "Order", "Family",  "Genus", "Species")
   }
 
   # Return object for phyloseq
