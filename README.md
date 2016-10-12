@@ -3,7 +3,7 @@ A set of R functions that help faciliate a lot of tedious processing
 [![Travis-CI Build Status](https://travis-ci.org/twbattaglia/btools.svg?branch=master)](https://travis-ci.org/twbattaglia/btools)
 
 ## Install
-```bash
+```R
 install.packages('devtools')
 devtools::install_github('twbattaglia/btools')
 library(btools)
@@ -21,12 +21,24 @@ biocLite("vegan")
 # Load necessary packages
 library(phyloseq)
 library(ggplot2)
+library(btools)
 
 # Import OTU table + tree + map
 phylo <- create_phylo(biom_fp = "otu_table.biom",
                       mappingfile_fp = "mapping_file.txt",
                       tree_fp = "rep_set.tre")
 ```
+
+## Remove blanks from each PCR run
+For each PCR run, remove the blanks that correspond to each plate.
+```R
+phylo_noblanks <- remove_blanks(phylo = phylo, 
+                                runID = "PCR_Plate", 
+                                blankID = "Donor", 
+                                blankName = "blank",
+                                removeBlank = FALSE)
+```
+
 
 
 ## List of Functions
