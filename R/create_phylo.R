@@ -14,7 +14,7 @@
 create_phylo <- function(biom_fp, mappingfile_fp, tree_fp){
 
   # Import biom
-  x = biomformat::read_biom(biom_fp)
+  x = suppressMessages(biomformat::read_biom(biom_fp))
   otutab = otu_table(as(biom_data(x), "matrix"), taxa_are_rows = TRUE)
 
   # Import taxa
