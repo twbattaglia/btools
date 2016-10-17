@@ -33,7 +33,7 @@ plotPCA3D <- function (object, intgroup = "condition", ntop = 500, returnData = 
                   intgroup.df,
                   name = colnames(object))
   if (returnData) {
-    attr(d, "percentVar") <- percentVar[1:2]
+    attr(d, "percentVar") <- percentVar[1:3]
     return(d)
   }
   message("Generating plotly plot")
