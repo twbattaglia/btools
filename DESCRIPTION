@@ -17,7 +17,9 @@ Imports:
     reshape2,
     plotly,
     DESeq2,
+    genefilter,
     biomformat
 Suggests:
-    ggplot2
+    ggplot2,
+    testthat
 RoxygenNote: 5.0.1
