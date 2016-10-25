@@ -18,7 +18,8 @@ Imports:
     plotly,
     DESeq2,
     genefilter,
-    biomformat
+    biomformat,
+    picante
 Suggests:
     ggplot2,
     testthat
