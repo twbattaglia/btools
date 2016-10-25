@@ -11,6 +11,18 @@ library(btools)
 
 ## Import QIIME to phyloseq
 
+#### Convert OTU table to JSON format (needed if processed with qiime 1.9.1+) 
+```bash
+# Run in Terminal
+biom convert \
+-i otu_table.biom \
+-o otu_table_json.biom \
+--to-json \
+--otu-table 'OTU table'
+```
+
+#### Install required R packages and build phyloseq object
+
 ```R
 # Install necessary packages
 source("https://bioconductor.org/biocLite.R")
@@ -24,7 +36,7 @@ library(ggplot2)
 library(btools)
 
 # Import OTU table + tree + map
-phylo <- create_phylo(biom_fp = "otu_table.biom",
+phylo <- create_phylo(biom_fp = "otu_table_json.biom",
                       mappingfile_fp = "mapping_file.txt",
                       tree_fp = "rep_set.tre")
 ```
@@ -34,7 +46,7 @@ For each PCR run, remove the blanks that correspond to each plate.
 ```R
 phylo_noblanks <- remove_blanks(phylo = phylo, 
                                 runID = "PCR_Plate", 
-                                blankID = "Donor", 
+                                blankID = "Group", 
                                 blankName = "blank",
                                 removeBlank = FALSE)
 ```
@@ -62,6 +74,11 @@ compare_beta_diversity(phylo,
                        write = T, 
                        fdr = TRUE,
                        filename = "bdiv_results")
+```
+
+#### Faiths PD calculation
+```R
+estimate_pd(phylo)
 ```
 
 #### PICRUSt metagenomic contributions table + grpah
@@ -100,6 +117,7 @@ genes <- import_rcc("cel_files/")
 
 #### BF ratio
 ```R
+# Calculate BF ratio
 phyloseq <- bf_ratio(phyloseq)
 
 # View log2 BF ratio's
