@@ -13,31 +13,21 @@
 #' @export
 create_phylo <- function(biom_fp, mappingfile_fp, tree_fp){
 
-  # Import biom
-  x = suppressMessages(biomformat::read_biom(biom_fp))
-  otutab = otu_table(as(biom_data(x), "matrix"), taxa_are_rows = TRUE)
+  # Import BIOM + tree
+  data = phyloseq::import_biom(BIOMfilename = biom_fp,
+                               treefilename = tree_fp,
+                               parseFunction = parse_taxonomy_greengenes)
 
-  # Import taxa
-  taxlist = lapply(x$rows, function(i) {parse_taxonomy_default(i$metadata$taxonomy)})
-  names(taxlist) = sapply(x$rows, function(i) {i$id})
-  taxtab = build_tax_table(taxlist)
-
-  # Import tree
-  tree <- phyloseq::read_tree(tree_fp)
-
-  # Import map
+  # Import mapping file
   mapping =  phyloseq::import_qiime_sample_data(mapfilename = mappingfile_fp)
 
-  # Create phylodata object
-  phylodata <- phyloseq(otutab, taxtab, mapping, tree)
+  # Create phyloseq object
+  phylo <- phyloseq::merge_phyloseq(data, mapping)
 
   # Change rank names
-  if(phyloseq::rank_names(phylodata) != c("Kingdom","Phylum", "Class", "Order", "Family", "Genus", "Species")){
-    # Fix rank names
-    colnames(tax_table(phylodata)) <- c("Kingdom", "Phylum", "Class", "Order", "Family",  "Genus", "Species")
-  }
+  suppressMessages(colnames(tax_table(phylo)) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"))
 
-  # Return object for phyloseq
+  # return object for phyloseq
   message("Phyloseq object sucessful created")
-  return(phylodata)
+  return(phylo)
 }
