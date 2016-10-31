@@ -20,14 +20,28 @@ estimate_pd <- function(phylo){
     stop("Could not find tree slot in phylo object.")
   }
 
-  # Get OTU table data matrix
-  otutable <- t(as(otu_table(phylo, taxa_are_rows = F), "matrix"))
+  # Transpose if needed
+  # Adapted from phyloseq/vegan import
+  OTU <- phyloseq::otu_table(phylo)
+  if (taxa_are_rows(OTU)) {
+    OTU <- t(OTU)
+  }
+
+  # Get matrix version of OTU table
+  otutable <- as(OTU, "matrix")
 
   # Get phylogenetic tree from pyloseq object
-  tree <- phy_tree(phylo)
+  tree <- phyloseq::phy_tree(phylo)
 
-  # Calculate Faiths PD
+  # Print status message
   message("Calculating Faiths PD-index...")
+
+  # If object is greater than 10mb, then print status message
+  if(object.size(otutable) > 10000000){
+    message("This is a large object, it may take awhile...")
+  }
+
+  # Calculate Faith's PD-index
   pdtable <- picante::pd(otutable, tree, include.root = F)
 
   # Return data frame of results
