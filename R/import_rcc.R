@@ -15,7 +15,7 @@ import_rcc <- function(rccPath = "", useFolderPath = T){
     if (!file.exists(rccPath)) {
       stop(paste("READ.MARKUP.RCC: path was not found.  \n"))
     }
-    rcc.files <- list.files(path = rccPath, pattern = "*.RCC|*.rcc", full.names = T)
+    rcc.files <- list.files(path = rccPath, pattern = "*.RCC|*.rcc", full.names = T, recursive = T)
     if (length(rcc.files) == 0) {
       stop(paste("READ.MARKUP.RCC: no RCC files found.  \n"))
     }
