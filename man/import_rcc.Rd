@@ -17,4 +17,3 @@ A dataframe of count data with columns as samples and rows as genes.
 \description{
 Import nanostring RCC raw files and generate a table based on sampleID's from each file.
 }
-

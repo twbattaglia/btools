@@ -40,4 +40,3 @@ A dataframe with taxa information and sample metadata
 Compute p-values and multiple comparisons adjusted q-values for
 two-group comparisons across multiple timepoints.
 }
-

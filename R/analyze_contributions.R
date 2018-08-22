@@ -11,7 +11,7 @@
 #' @param mappingfile_fp File location of the input sample metadata.
 #' @return A very long dataframe with taxa information and sample metadata for each observed OTU.
 #' @export
-analyze_contributions <- function(contributions_fp, mappingfile_fp){
+analyze_contributions <- function(contributions_fp, contributions_id = "Sample", mappingfile_fp, mappingfile_id = "X.SampleID"){
 
   # - - - - - - - - - - - - -
   # Error handling
@@ -60,7 +60,7 @@ analyze_contributions <- function(contributions_fp, mappingfile_fp){
   # Add Metadata infomation
   # - - - - - - - - - - - - -
   message("Adding metadata to table...")
-  input.df.metadata <- merge(input.df, mappingfile, by.x = "Sample", by.y = "X.SampleID")
+  input.df.metadata <- merge(input.df, mappingfile, by.x = contributions_id, by.y = mappingfile_id)
 
 
   # - - - - - - - - - - - - -

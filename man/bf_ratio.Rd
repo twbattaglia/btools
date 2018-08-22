@@ -16,4 +16,3 @@ A phyloseq object with 'log2_bf_ratio' as a new metadata column
 This function will computer the B/F ratio based on the relative abundances
 between the Bacteroidetes and Firmicutes phyla.
 }
-

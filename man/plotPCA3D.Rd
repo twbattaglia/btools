@@ -4,7 +4,8 @@
 \alias{plotPCA3D}
 \title{Plot DESeq2's PCA plotting with Plotly 3D scatterplot}
 \usage{
-plotPCA3D(object, intgroup = "condition", ntop = 500, returnData = FALSE)
+plotPCA3D(object, intgroup = "condition", ntop = 500,
+  returnData = FALSE)
 }
 \arguments{
 \item{object}{a DESeqTransform object, with data in assay(x), produced for example by either rlog or varianceStabilizingTransformation.}
@@ -22,4 +23,3 @@ An object created by plot_ly, which can be assigned and further customized.
 The function will generate a plot_ly 3D scatter plot image for
 a 3D exploration of the PCA.
 }
-

@@ -25,4 +25,3 @@ A phyloseq object with the OTU's removed from each plate per plate-blank
 This function will remove the OTU from blanks within the
 an OTU table, for each plate/run
 }
-

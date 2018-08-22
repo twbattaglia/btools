@@ -15,4 +15,3 @@ A data.frame of phylogenetic diversity metrics.
 \description{
 Estimate the Faiths phylogenetic diverstiy from an OTU table and phylogenetic tree
 }
-

@@ -4,7 +4,8 @@
 \alias{analyze_contributions}
 \title{Add meta data to contributions file}
 \usage{
-analyze_contributions(contributions_fp, mappingfile_fp)
+analyze_contributions(contributions_fp, contributions_id = "Sample",
+  mappingfile_fp, mappingfile_id = "X.SampleID")
 }
 \arguments{
 \item{contributions_fp}{File location of the metagenomic_contributions.py output.}
@@ -20,4 +21,3 @@ contains the rownames and the subsequent columns are the sample identifiers.
 Any rows with duplicated row names will be dropped with the first one being
 kepted.
 }
-

@@ -4,10 +4,10 @@
 \alias{compare_beta_diversity}
 \title{Calculate beta diversity statistics over time.}
 \usage{
-compare_beta_diversity(phylo, x = as.character(), group = as.character(),
-  test = c("adonis", "anosim"), bdiv = c("weighted", "unweighted"),
-  write = F, filename = "results", fdr = T, fdr_test = "fdr",
-  seed = 918, ...)
+compare_beta_diversity(phylo, x = as.character(),
+  group = as.character(), test = c("adonis", "anosim"),
+  bdiv = c("weighted", "unweighted"), write = F,
+  filename = "results", fdr = T, fdr_test = "fdr", seed = 918, ...)
 }
 \arguments{
 \item{phylo}{A phyloseq object}
@@ -39,4 +39,3 @@ A dataframe for an PERMANOVA test over each timepoint from each two group compar
 Compute p-values and multiple comparisons adjusted q-values for
 two-group comparisons using PERMANOVA on beta diversity metrics across multiple timepoints.
 }
-

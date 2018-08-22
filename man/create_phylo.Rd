@@ -21,4 +21,3 @@ This function loads an OTU table (.biom format) a phylogenetic tree file (.tre) 
 a sample mapping file (.txt/.tsv) to create a standard phyloseq object. Input BIOM file
 can be in either JSON format or HDF5.
 }
-
