@@ -93,7 +93,7 @@ contributions %>%
   filter(Contribution_perc >= 0) %>%
   select(Gene, family, Contribution_perc) %>%
   mutate(Contribution = Contribution_perc/sum(Contribution_perc) * 100) %>%
-  ggplot(arrange(pp_pathway_norm, family), aes(x = Treatment, y = Contribution, fill = family)) + 
+  ggplot(aes(x = Treatment, y = Contribution, fill = family)) + 
   geom_bar(stat = "identity") + 
   theme(axis.text.x = element_text(size = 6)) + 
   scale_y_continuous(expand = c(0, 0), limits = c(0, 100)) + 
